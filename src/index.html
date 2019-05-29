@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>The Pomodoro Timer</title>
+    <link rel="stylesheet" href="./style.css" type="text/css" />
+  </head>
+  <body>
+    <div id="title-div">
+      <h1 id="main-title">The P<img src="./tomato.svg" alt="O" height="50" width="50">modoro Timer</h1>
+      <p>Short work cycles to keep you focused and productive</p>
+    </div>
+
+    <div id="clockdiv">
+      <h1 id="timerDisplay">25:00</h1>
+    </div>
+
+    <div id="button-div">
+      <button class="start">Start</button>
+      <button class="reset" onclick="reset()">Reset</button>
+    </div>
+
+    <div class="checkmarks"></div>
+
+    <hr />
+
+    <p>How it Works</p>
+    <ol>
+      <li>Decide on the task...</li>
+      <li>Start the timer</li>
+      <li>Work on the task for 25 minutes</li>
+      <li>
+        When the timer finishes, take a 5 minute break (i.e. check email, get a
+        cup of water, etc.)
+      </li>
+      <li>Repeat steps 2 through 4 three times</li>
+      <li>After the 4th cycle, take a longer break (15-30 minutes)</li>
+    </ol>
+
+    <div id="flaticons">
+      Icons made by
+      <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from
+      <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+      is licensed by
+      <a
+        href="http://creativecommons.org/licenses/by/3.0/"
+        title="Creative Commons BY 3.0"
+        target="_blank"
+        >CC 3.0 BY</a
+      >
+    </div>
+  </body>
+
+  <script src="../src/scripts/countdownTimer.js"></script>
+</html>
