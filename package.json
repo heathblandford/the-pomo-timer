@@ -1,10 +1,11 @@
 {
-  "name": "new-pomo-timer",
+  "name": "the-pomo-timer",
   "version": "1.0.0",
   "description": "A Pomodoro timer to help you improve your productivity.",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "author": "Heath Blandford",
   "license": "ISC",
@@ -18,5 +19,14 @@
   "repository": {
     "type": "git", 
     "url": "https://github.com/heathblandford/the-pomo-timer.git"
+  },
+  "build": {
+    "appId": "com.thepomotimer.app",
+    "productName": "The Pomo Timer",
+    "target": "NSIS",
+    "nsis": {
+        "allowToChangeInstallationDirectory": true,
+        "oneClick": false
+    }
   }
 }

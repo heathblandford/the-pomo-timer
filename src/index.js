@@ -4,7 +4,7 @@ const path = require("path");
 let tray = null;
 let mainWin;
 let cycles = 0;
-app.setAppUserModelId(process.execPath);
+app.setAppUserModelId("com.thepomotimer.app");
 
 if (require('electron-squirrel-startup')) return;
 
