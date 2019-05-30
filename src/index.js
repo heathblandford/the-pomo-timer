@@ -11,6 +11,10 @@ if (require('electron-squirrel-startup')) return;
 app.on("ready", () => {
   const trayIcon = path.join(__dirname, "/tomato.png");
 
+  if (process.platform === 'win32') {
+    app.setAppUserModelId("com.ikobit.desktop-notifications");
+  }
+
   mainWin = new BrowserWindow({
     width: 800,
     height: 800,
