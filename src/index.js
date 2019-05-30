@@ -3,8 +3,8 @@ const path = require("path");
 
 let tray = null;
 let mainWin;
-let cycles = 0;
-app.setAppUserModelId("com.thepomotimer.app");
+// let cycles = 0;
+
 
 if (require('electron-squirrel-startup')) return;
 
@@ -12,7 +12,8 @@ app.on("ready", () => {
   const trayIcon = path.join(__dirname, "/tomato.png");
 
   if (process.platform === 'win32') {
-    app.setAppUserModelId("com.ikobit.desktop-notifications");
+    app.setAppUserModelId("com.thepomotimer.app");
+    // app.setAppUserModelId(process.execPath);
   }
 
   mainWin = new BrowserWindow({
