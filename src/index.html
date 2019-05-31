@@ -7,7 +7,7 @@
   </head>
   <body>
     <div id="title-div">
-      <h1 id="main-title">The P<img src="./tomato.svg" alt="O" height="50" width="50">modoro Timer</h1>
+      <h1 id="main-title">The P<img src="./tomato.svg" alt="O" height="50" width="50">mo Timer</h1>
       <p>Short work cycles to keep you focused and productive</p>
     </div>
 
@@ -39,8 +39,12 @@
 
     <div id="donate">
       <p>I don't expect you to donate but if you're feeling gracious: </p>
-      <a href="#">Donate Here</a>
-      <a href="#">Sponsor on GitHub</a>
+      <button id="donate-button">Buy Me a ☕</button>
+      <ul id="crypto">
+        <li>Bitcoin: 1FMqB3BU31dMubAkXo3W7m4d48rGJ383NS</li>
+        <li>Ethereum: 0x838d338c8E9968d0ab28C71C0Fb9647EAe4d250B</li>
+        <li>Litecoin: MLB31cLF5bVNmncqc46NHXxLZNYrS1nCqb</li>
+      </ul>
     </div>
     
     <div id="flaticons">
@@ -58,4 +62,13 @@
   </body>
 
   <script src="../src/scripts/countdownTimer.js"></script>
+  <script>
+      const { shell } = require('electron');
+
+      let donate = document.getElementById("donate-button");
+
+      donate.addEventListener('click', () => {
+        shell.openExternal('https://www.buymeacoffee.com/bnXEJstTZ');
+      });
+  </script>
 </html>
