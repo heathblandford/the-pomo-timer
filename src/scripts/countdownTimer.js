@@ -50,3 +50,11 @@ function reset() {
 }
 
 startButton.addEventListener("click", startTimer);
+
+ipcRenderer.on('timer:reset', () => {
+    reset();
+});
+
+ipcRenderer.on('timer:start', () => {
+    startTimer();
+});

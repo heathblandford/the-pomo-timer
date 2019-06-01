@@ -37,6 +37,10 @@ body {
   font-size: 16px;
 }
 
+.start:focus {
+    outline: 0;
+}
+
 .reset {
   background-color: #da6c00;
   border: none;
@@ -47,6 +51,10 @@ body {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+}
+
+.reset:focus {
+    outline: 0;
 }
 
 #donate {

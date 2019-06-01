@@ -15,48 +15,79 @@ let settingsWin;
 if (require("electron-squirrel-startup")) return;
 
 app.on("ready", () => {
-  const trayIcon = path.join(__dirname, "/tomato.png");
-
-  if (process.platform === "win32") {
-    app.setAppUserModelId("com.thepomotimer.app");
-    // app.setAppUserModelId(process.execPath);
-  }
-
-  const menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(menu);
-
-  mainWin = new BrowserWindow({
-    width: 800,
-    height: 800,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    icon: path.join(__dirname, "\\tomato256x256.png")
-  });
-  mainWin.loadURL(`file://${__dirname}/index.html`);
-
-  tray = new Tray(trayIcon);
-  tray.setContextMenu(contextMenu);
-  tray.setToolTip("Click to Toggle the Window");
-
-  tray.on("click", e => {
-    e.preventDefault();
-    mainWin.isVisible() ? mainWin.hide() : mainWin.show();
-  });
-  
+    const trayIcon = path.join(__dirname, "/tomato.png");
+    
+    if (process.platform === "win32") {
+        app.setAppUserModelId("com.thepomotimer.app");
+        // app.setAppUserModelId(process.execPath);
+    }
+    
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
+    
+    mainWin = new BrowserWindow({
+        width: 800,
+        height: 800,
+        webPreferences: {
+            nodeIntegration: true
+        },
+        icon: path.join(__dirname, "\\tomato256x256.png")
+    });
+    mainWin.loadURL(`file://${__dirname}/index.html`);
+    
+    mainWin.on('close', (e) => {
+        if(!app.isQuiting){
+            e.preventDefault();
+            mainWin.hide();
+        }
+    
+        return false;
+    });
+    
+    tray = new Tray(trayIcon);
+    tray.setContextMenu(contextMenu);
+    tray.setToolTip("Click to Toggle the Window");
+    
+    tray.on("click", e => {
+        e.preventDefault();
+        mainWin.isVisible() ? mainWin.hide() : mainWin.show();
+    });
+    
 });
+
 
 const contextMenu = Menu.buildFromTemplate([
     {
         label: 'Reset',
-        click(mainWin) {
-            mainWin.reload();
+        click () {
+            sendReset(mainWin)
+        }
+    },
+    {
+        label: 'Start',
+        click () {
+            sendStart(mainWin)
+        }
+    }, 
+    {
+        label: 'Quit', 
+        click () {
+            app.isQuitting = true;
+            app.exit();
         }
     }
-])
+]);
+
+function sendReset(window) {
+    window.webContents.send('timer:reset', 'world');
+};
+
+function sendStart(window) {
+    window.webContents.send('timer:start', 'hi');
+};
 
 function settingsWindow() {
-  settingsWin = new BrowserWindow({
+    settingsWin = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true
     },
