@@ -7,8 +7,6 @@ const {
   Menu
 } = require("electron");
 const path = require("path");
-const fs = require('fs');
-// const remote = require('remote');
 
 let tray = null;
 let mainWin;
@@ -37,7 +35,8 @@ app.on("ready", () => {
   });
   mainWin.loadURL(`file://${__dirname}/index.html`);
 
-  mainWin.webContents.openDevTools();
+  // uncomment if you want to open dev tools
+//   mainWin.webContents.openDevTools();
 
   mainWin.on("close", e => {
     if (!app.isQuiting) {
