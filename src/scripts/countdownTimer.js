@@ -3,7 +3,9 @@ let countdown;
 const timerDisplay = document.getElementById("timerDisplay");
 const startButton = document.querySelector(".start");
 let timerDone = false;
-let timerLength = .05; // in minutes
+let timerLength = 25; // in minutes
+
+// let newTimerLength = timerDisplay.innerHTML;
 
 // const { ipcRenderer } = require("electron");
 
@@ -51,10 +53,10 @@ function reset() {
 
 startButton.addEventListener("click", startTimer);
 
-ipcRenderer.on('timer:reset', () => {
-    reset();
+ipcRenderer.on("timer:reset", () => {
+  reset();
 });
 
-ipcRenderer.on('timer:start', () => {
-    startTimer();
+ipcRenderer.on("timer:start", () => {
+  startTimer();
 });

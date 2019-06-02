@@ -10,14 +10,15 @@
   "author": "Heath Blandford",
   "license": "ISC",
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "remote": "^0.2.6"
   },
   "devDependencies": {
     "electron": "^5.0.2",
     "electron-builder": "^20.41.0"
   },
   "repository": {
-    "type": "git", 
+    "type": "git",
     "url": "https://github.com/heathblandford/the-pomo-timer.git"
   },
   "build": {
@@ -25,9 +26,9 @@
     "productName": "The Pomo Timer",
     "target": "NSIS",
     "nsis": {
-        "allowToChangeInstallationDirectory": true,
-        "oneClick": false,
-        "createDesktopShortcut": false
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "createDesktopShortcut": false
     }
   }
 }

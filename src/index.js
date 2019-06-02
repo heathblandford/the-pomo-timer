@@ -7,98 +7,104 @@ const {
   Menu
 } = require("electron");
 const path = require("path");
+const fs = require('fs');
+// const remote = require('remote');
 
 let tray = null;
 let mainWin;
-let settingsWin;
+// let settingsWin;
 
 if (require("electron-squirrel-startup")) return;
 
 app.on("ready", () => {
-    const trayIcon = path.join(__dirname, "/tomato.png");
-    
-    if (process.platform === "win32") {
-        app.setAppUserModelId("com.thepomotimer.app");
-        // app.setAppUserModelId(process.execPath);
-    }
-    
-    const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
-    
-    mainWin = new BrowserWindow({
-        width: 800,
-        height: 800,
-        webPreferences: {
-            nodeIntegration: true
-        },
-        icon: path.join(__dirname, "\\tomato256x256.png")
-    });
-    mainWin.loadURL(`file://${__dirname}/index.html`);
-    
-    mainWin.on('close', (e) => {
-        if(!app.isQuiting){
-            e.preventDefault();
-            mainWin.hide();
-        }
-    
-        return false;
-    });
-    
-    tray = new Tray(trayIcon);
-    tray.setContextMenu(contextMenu);
-    tray.setToolTip("Click to Toggle the Window");
-    
-    tray.on("click", e => {
-        e.preventDefault();
-        mainWin.isVisible() ? mainWin.hide() : mainWin.show();
-    });
-    
-});
+  const trayIcon = path.join(__dirname, "/tomato.png");
 
+  if (process.platform === "win32") {
+    app.setAppUserModelId("com.thepomotimer.app");
+    // app.setAppUserModelId(process.execPath);
+  }
 
-const contextMenu = Menu.buildFromTemplate([
-    {
-        label: 'Reset',
-        click () {
-            sendReset(mainWin)
-        }
-    },
-    {
-        label: 'Start',
-        click () {
-            sendStart(mainWin)
-        }
-    }, 
-    {
-        label: 'Quit', 
-        click () {
-            app.isQuitting = true;
-            app.exit();
-        }
-    }
-]);
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
 
-function sendReset(window) {
-    window.webContents.send('timer:reset', 'world');
-};
-
-function sendStart(window) {
-    window.webContents.send('timer:start', 'hi');
-};
-
-function settingsWindow() {
-    settingsWin = new BrowserWindow({
+  mainWin = new BrowserWindow({
+    width: 800,
+    height: 800,
     webPreferences: {
       nodeIntegration: true
     },
-    width: 400,
-    height: 400,
-    icon: path.join(__dirname, "./tomato256x256.png")
+    icon: path.join(__dirname, "\\tomato256x256.png")
   });
-  settingsWin.loadURL(`file://${__dirname}/settings.html`);
+  mainWin.loadURL(`file://${__dirname}/index.html`);
 
-  settingsWin.setMenu(null)
+  mainWin.webContents.openDevTools();
+
+  mainWin.on("close", e => {
+    if (!app.isQuiting) {
+      e.preventDefault();
+      mainWin.hide();
+    }
+
+    return false;
+  });
+
+  tray = new Tray(trayIcon);
+  tray.setContextMenu(contextMenu);
+  tray.setToolTip("Click to Toggle the Window");
+
+  tray.on("click", e => {
+    e.preventDefault();
+    mainWin.isVisible() ? mainWin.hide() : mainWin.show();
+  });
+});
+
+const contextMenu = Menu.buildFromTemplate([
+  {
+    label: "Reset",
+    click() {
+      sendReset(mainWin);
+    }
+  },
+  {
+    label: "Start",
+    click() {
+      sendStart(mainWin);
+    }
+  },
+  {
+    label: "Quit",
+    click() {
+      app.isQuitting = true;
+      app.exit();
+    }
+  }
+]);
+
+function sendReset(window) {
+  window.webContents.send("timer:reset", "world");
 }
+
+function sendStart(window) {
+  window.webContents.send("timer:start", "hi");
+}
+
+// function settingsWindow() {
+//   settingsWin = new BrowserWindow({
+//     webPreferences: {
+//       nodeIntegration: true
+//     },
+//     width: 400,
+//     height: 400,
+//     icon: path.join(__dirname, "./tomato256x256.png")
+//   });
+//   settingsWin.loadURL(`file://${__dirname}/settings.html`);
+
+//   settingsWin.on("close", () => {
+//     settingsWin = null;
+//   });
+
+//   settingsWin.setMenu(null);
+// }
 
 ipcMain.on("timer:done", (e, timerDone) => {
   //if timer done = true send notification
@@ -139,13 +145,15 @@ const template = [
       }
     ]
   },
-  {
-    label: "Settings",
-    accelerator: "CmdOrCtrl+,",
-    click() {
-      settingsWindow();
-    }
-  },
+  // {
+  //   label: "Settings",
+  //   accelerator: "CmdOrCtrl+,",
+  //   click() {
+  //     if (settingsWin == null) {
+  //       settingsWindow();
+  //     }
+  //   }
+  // },
   {
     role: "help",
     submenu: [
