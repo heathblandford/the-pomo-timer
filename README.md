@@ -9,4 +9,5 @@ This is my first ever electron app... and first thing I've ever truly put into p
 
 The timer defaults to 25 minutes, clicking start starts the timer and a notification will let you know when the timer is finished if you have the program pinned to start. 
 
-**Current the notifications in the full build are not working... that is a bug and I'm working on it now.**
+## Usage
+**Custom Timer** 

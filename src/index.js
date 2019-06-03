@@ -10,6 +10,7 @@ const path = require("path");
 
 let tray = null;
 let mainWin;
+let newTimerWin;
 // let settingsWin;
 
 if (require("electron-squirrel-startup")) return;
@@ -36,7 +37,7 @@ app.on("ready", () => {
   mainWin.loadURL(`file://${__dirname}/index.html`);
 
   // uncomment if you want to open dev tools
-//   mainWin.webContents.openDevTools();
+  //   mainWin.webContents.openDevTools();
 
   mainWin.on("close", e => {
     if (!app.isQuiting) {
@@ -105,6 +106,31 @@ function sendStart(window) {
 //   settingsWin.setMenu(null);
 // }
 
+function customTimer() {
+  newTimerWin = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true
+    },
+    width: 400,
+    height: 400,
+    icon: path.join(__dirname, "./tomato256x256.png")
+  });
+
+  //   newTimerWin.on("close", () => {
+  //       newTimerWin == null;
+  //   });
+  // uncomment if you want to open dev tools
+  //   newTimerWin.webContents.openDevTools();
+
+  newTimerWin.loadURL(`file://${__dirname}/customTimer.html`);
+
+  newTimerWin.setMenu(null);
+}
+
+ipcMain.on("new_timer", (e, timer) => {
+  mainWin.webContents.send("new_new_timer", timer);
+});
+
 ipcMain.on("timer:done", (e, timerDone) => {
   //if timer done = true send notification
   let n = new Notification({
@@ -153,6 +179,12 @@ const template = [
   //     }
   //   }
   // },
+  {
+    label: "Custom Timer",
+    click() {
+      customTimer();
+    }
+  },
   {
     role: "help",
     submenu: [

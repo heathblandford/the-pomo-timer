@@ -3,11 +3,14 @@ let countdown;
 const timerDisplay = document.getElementById("timerDisplay");
 const startButton = document.querySelector(".start");
 let timerDone = false;
-let timerLength = 25; // in minutes
+let timerLength = 25; // default, in minutes
 
 // let newTimerLength = timerDisplay.innerHTML;
 
-// const { ipcRenderer } = require("electron");
+ipcRenderer.on('new_new_timer', (e, yeetTimer) => {
+    timerDisplay.innerText = yeetTimer;
+    timerLength = yeetTimer;
+})
 
 function timer(seconds) {
   // clear timers
