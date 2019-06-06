@@ -4,7 +4,8 @@ const {
   Tray,
   ipcMain,
   Notification,
-  Menu
+  Menu,
+  globalShortcut
 } = require("electron");
 const path = require("path");
 
@@ -17,10 +18,20 @@ if (require("electron-squirrel-startup")) return;
 
 app.on("ready", () => {
   const trayIcon = path.join(__dirname, "/tomato.png");
+  const globalShowWindow = globalShortcut.register(
+    "CommandOrControl + Alt + p",
+    () => {
+      mainWin.isVisible() ? mainWin.hide() : mainWin.show();
+    }
+  );
+
+  if (!globalShowWindow) {
+    console.log("registration failed");
+  }
 
   if (process.platform === "win32") {
-    app.setAppUserModelId("com.thepomotimer.app");
-    // app.setAppUserModelId(process.execPath);
+    // app.setAppUserModelId("com.thepomotimer.app");
+    app.setAppUserModelId(process.execPath);
   }
 
   const menu = Menu.buildFromTemplate(template);
@@ -37,8 +48,9 @@ app.on("ready", () => {
   mainWin.loadURL(`file://${__dirname}/index.html`);
 
   // uncomment if you want to open dev tools
-  //   mainWin.webContents.openDevTools();
+  // mainWin.webContents.openDevTools();
 
+  //prevent closing window when X is hit
   mainWin.on("close", e => {
     if (!app.isQuiting) {
       e.preventDefault();
@@ -133,14 +145,18 @@ ipcMain.on("new_timer", (e, timer) => {
 
 ipcMain.on("timer:done", (e, timerDone) => {
   //if timer done = true send notification
-  let n = new Notification({
+  let timerDoneNotification = new Notification({
     title: "The Pomodoro Timer",
     body: "Your 25 minutes is up! Take a 5 minute break. "
   });
 
   if (timerDone) {
-    n.show();
+    timerDoneNotification.show();
   }
+
+  timerDoneNotification.onclick = () => {
+    console.log("notification clicked");
+  };
 });
 
 const template = [
@@ -167,6 +183,14 @@ const template = [
       },
       {
         role: "close"
+      },
+      {
+        label: "Quit",
+        accelerator: "CmdOrCtrl+Q",
+        click() {
+          app.isQuitting = true;
+          app.exit();
+        }
       }
     ]
   },
