@@ -7,10 +7,10 @@ let timerLength = 25; // default, in minutes
 
 // let newTimerLength = timerDisplay.innerHTML;
 
-ipcRenderer.on('new_new_timer', (e, yeetTimer) => {
-    timerDisplay.innerText = yeetTimer;
-    timerLength = yeetTimer;
-})
+ipcRenderer.on("new_new_timer", (e, yeetTimer) => {
+  timerDisplay.innerText = yeetTimer;
+  timerLength = yeetTimer;
+});
 
 function timer(seconds) {
   // clear timers

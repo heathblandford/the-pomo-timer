@@ -62,6 +62,7 @@ app.on("ready", () => {
     return false;
   });
 
+  //tray menu actions
   tray = new Tray(trayIcon);
   tray.setContextMenu(contextMenu);
   tray.setToolTip("Click to Toggle the Window");
@@ -94,32 +95,17 @@ const contextMenu = Menu.buildFromTemplate([
   }
 ]);
 
+//send reset timer from tray
 function sendReset(window) {
   window.webContents.send("timer:reset", "world");
 }
 
+//send start timer from tray
 function sendStart(window) {
   window.webContents.send("timer:start", "hi");
 }
 
-// function settingsWindow() {
-//   settingsWin = new BrowserWindow({
-//     webPreferences: {
-//       nodeIntegration: true
-//     },
-//     width: 400,
-//     height: 400,
-//     icon: path.join(__dirname, "./tomato256x256.png")
-//   });
-//   settingsWin.loadURL(`file://${__dirname}/settings.html`);
-
-//   settingsWin.on("close", () => {
-//     settingsWin = null;
-//   });
-
-//   settingsWin.setMenu(null);
-// }
-
+//custom timer window
 function customTimer() {
   newTimerWin = new BrowserWindow({
     webPreferences: {
@@ -130,9 +116,6 @@ function customTimer() {
     icon: path.join(__dirname, "./tomato256x256.png")
   });
 
-  //   newTimerWin.on("close", () => {
-  //       newTimerWin == null;
-  //   });
   // uncomment if you want to open dev tools
   //   newTimerWin.webContents.openDevTools();
 
@@ -141,17 +124,25 @@ function customTimer() {
   newTimerWin.setMenu(null);
 }
 
+//recieve customer timer from customTimer.html and send back to countdownTimer.js
+//probably a better way to do this
 ipcMain.on("new_timer", (e, timer) => {
   mainWin.webContents.send("new_new_timer", timer);
 });
 
+//close the custom timer window when user click ok
+ipcMain.on("timer:set", e => {
+  newTimerWin.close();
+});
+
+//when the timerDone signal recieved, activate notification
 ipcMain.on("timer:done", (e, timerDone) => {
-  //if timer done = true send notification
   let timerDoneNotification = new Notification({
     title: "The Pomodoro Timer",
     body: "Your 25 minutes is up! Take a 5 minute break. "
   });
 
+  // if the timer is done send the notification
   if (timerDone) {
     timerDoneNotification.show();
   }
