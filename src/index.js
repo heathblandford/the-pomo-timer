@@ -32,8 +32,8 @@ app.on("ready", () => {
   // if running on windows, set the app model id to the program running
   // commented line used during development
   if (process.platform === "win32") {
-    // app.setAppUserModelId("com.thepomotimer.app");
-    app.setAppUserModelId(process.execPath);
+    app.setAppUserModelId("com.thepomotimer.app");
+    // app.setAppUserModelId(process.execPath);
   }
 
   const menu = Menu.buildFromTemplate(template);
