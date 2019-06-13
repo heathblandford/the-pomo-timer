@@ -7,10 +7,16 @@ let timerLength = 25; // default, in minutes
 
 // let newTimerLength = timerDisplay.innerHTML;
 
-ipcRenderer.on("new_new_timer", (e, yeetTimer) => {
-  timerDisplay.innerText = yeetTimer;
-  timerLength = yeetTimer;
-});
+ipcRenderer.on('new_new_timer', (e, yeetTimer) => {
+  if(yeetTimer >= 1){
+    timerDisplay.innerText = `${yeetTimer}:00`;
+  } else if (yeetTimer <1 && yeetTimer >=0.17){
+    timerDisplay.innerText = `00:${Math.floor(yeetTimer * 60)}`;
+  } else if (yeetTimer < 0.17){
+    timerDisplay.innerText = `00:0${Math.floor(yeetTimer * 60)}`;
+  }
+    timerLength = yeetTimer;
+})
 
 function timer(seconds) {
   // clear timers
@@ -52,6 +58,7 @@ function reset() {
   clearInterval(countdown);
   timerDisplay.innerText = "25:00";
   timerDone = false;
+  timerLength = 25;
 }
 
 startButton.addEventListener("click", startTimer);
